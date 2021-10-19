@@ -1,7 +1,19 @@
 import './App.css';
-import {AppBar, Box, Button, Container, Drawer, Grid, IconButton, Toolbar, Typography} from "@mui/material";
+import {
+    AppBar,
+    Box,
+    Button,
+    Container,
+    Drawer,
+    Grid,
+    IconButton,
+    List, ListItemButton,
+    Toolbar,
+    Typography
+} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {useState} from "react";
+import {RssFeed} from "@mui/icons-material";
 
 function App() {
 
@@ -40,7 +52,12 @@ function App() {
             <div>
                 <Drawer anchor={'left'} onClick={()=>{setShowDrawer(!showDrawer)}} open={showDrawer}>
                     <Box  minWidth={200}>
-                        <Button>hi</Button>
+                        <List>
+                            <ListItemButton>
+                                <RssFeed/>
+                                <span>hi</span>
+                            </ListItemButton>
+                        </List>
 
                     </Box>
 
