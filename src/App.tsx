@@ -13,13 +13,12 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import {useState} from "react";
 import {RssFeed, Storage} from "@mui/icons-material";
-import {SS} from "./componnents/data/pagedata";
-
+import {Pdata} from "./componnents/data/data";
 
 
 function App() {
 
-    const [content, setContent] = useState(<SS></SS>);
+    const [content, setContent] = useState(<h1>dashboard</h1>);
 
     const [showDrawer, setShowDrawer] = useState(false);
 
@@ -55,11 +54,11 @@ function App() {
                 <Drawer anchor={'left'} onClick={()=>{setShowDrawer(!showDrawer)}} open={showDrawer}>
                     <Box  minWidth={200}>
                         <List>
-                            <ListItemButton onClick={()=>{setContent(<SS></SS>)}} >
+                            <ListItemButton onClick={()=>{setContent(<h1>rss</h1>)}} >
                                 <RssFeed/>
                                 <span>RSS</span>
                             </ListItemButton>
-                            <ListItemButton onClick={()=>{setContent(<h1>Data</h1>)}}>
+                            <ListItemButton onClick={()=>{setContent(<Pdata/>)}}>
                                 <Storage/>
                                 <span>Data</span>
                             </ListItemButton>
@@ -72,7 +71,7 @@ function App() {
             </div>
 
 
-            <Container style={{width: 'auto', height: 'auto', background: 'khaki'}}>
+            <Container style={{width: 'auto', padding:20, height: 'auto', background:'lightgray'}}>
 
                 <Grid width={'auto'} border={2} borderColor={'black'} height={'auto'}>
                     {content}
