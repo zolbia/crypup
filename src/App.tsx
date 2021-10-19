@@ -1,11 +1,13 @@
 import './App.css';
-import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, Container, Drawer, Grid, IconButton, Toolbar, Typography} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {useState} from "react";
 
 function App() {
 
-    const [content, setContent] = useState(<h1>hi</h1>);
+    const [content, setContent] = useState(<h1>Dashboard</h1>);
+
+    const [showDrawer, setShowDrawer] = useState(false);
 
 
     return (
@@ -21,7 +23,9 @@ function App() {
                             aria-label="menu"
                             sx={{mr: 2}}
                         >
-                            <MenuIcon />
+                            <MenuIcon onClick={() => {
+                                setShowDrawer(!showDrawer)
+                            }}/>
                         </IconButton>
 
 
@@ -32,6 +36,17 @@ function App() {
                 </AppBar>
 
             </Grid>
+
+            <div>
+                <Drawer anchor={'left'} onClick={()=>{setShowDrawer(!showDrawer)}} open={showDrawer}>
+                    <Box  minWidth={200}>
+                        <Button>hi</Button>
+
+                    </Box>
+
+                </Drawer>
+
+            </div>
 
 
             <Container style={{width: 'auto', height: 'auto', background: 'khaki'}}>
