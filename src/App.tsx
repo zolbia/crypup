@@ -7,59 +7,66 @@ import {DataUsageTwoTone, RssFeed, Sync} from "@mui/icons-material";
 function App() {
 
     const [drawerOpen, setDrawerOpen] = useState(false);
-  return (
+    return (
 
 
-    <div className="App">
-
-        <Drawer onClick={()=>{setDrawerOpen(!drawerOpen)}} open={drawerOpen} id="Drawer" anchor="left">
-            <Box sx={{width: 200}}>
-                <List>
-                    <ListItemButton sx={{width: '100%', height: 40}}>
-                        <ListItemIcon>
-                            <RssFeed/>
-                        </ListItemIcon>
-                        <span> Feeder </span>
-                    </ListItemButton>
-
-                    <ListItemButton sx={{width: '100%', height: 40}}>
-                        <ListItemIcon>
-                            <Sync/>
-                        </ListItemIcon>
-                        <span> Syncer </span>
-                    </ListItemButton>
-
-                    <ListItemButton sx={{width: '100%', height: 40}}>
-                        <ListItemIcon>
-                            <DataUsageTwoTone/>
-                        </ListItemIcon>
-                        <span> Data </span>
-                    </ListItemButton>
+        <div className="App">
 
 
-                </List>
-                <Button sx={{width: 'unset'}}>
+            <div>
 
-                </Button>
+                <Drawer onClick={() => {
+                    setDrawerOpen(!drawerOpen)
+                }} open={drawerOpen} id="Drawer" anchor="left">
+                    <Box sx={{width: 200}}>
+                        <List>
+                            <ListItemButton sx={{width: '100%', height: 40}}>
+                                <ListItemIcon>
+                                    <RssFeed/>
+                                </ListItemIcon>
+                                <span> Feeder </span>
+                            </ListItemButton>
 
-            </Box>
+                            <ListItemButton sx={{width: '100%', height: 40}}>
+                                <ListItemIcon>
+                                    <Sync/>
+                                </ListItemIcon>
+                                <span> Syncer </span>
+                            </ListItemButton>
 
-        </Drawer>
+                            <ListItemButton sx={{width: '100%', height: 40}}>
+                                <ListItemIcon>
+                                    <DataUsageTwoTone/>
+                                </ListItemIcon>
+                                <span> Data </span>
+                            </ListItemButton>
 
 
+                        </List>
+                        <Button sx={{width: 'unset'}}>
+
+                        </Button>
+
+                    </Box>
+
+                </Drawer>
+
+            </div>
 
 
-        <AppBar>
-            <Toolbar variant="dense">
-            <IconButton onClick={()=>{setDrawerOpen(!drawerOpen)}} >
-                <GridMenuIcon style={{color:'white'}} />
-            </IconButton>
-        </Toolbar>
+            <AppBar>
+                <Toolbar variant="dense">
+                    <IconButton onClick={() => {
+                        setDrawerOpen(!drawerOpen)
+                    }}>
+                        <GridMenuIcon style={{color: 'white'}}/>
+                    </IconButton>
+                </Toolbar>
 
-        </AppBar>
-      </div>
+            </AppBar>
+        </div>
 
-  );
+    );
 }
 
 export default App;
