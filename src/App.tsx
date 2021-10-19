@@ -1,13 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
-import {AppBar, Button} from "@mui/material";
+import {AppBar, Button, IconButton, Toolbar} from "@mui/material";
+import {GridMenuIcon} from "@mui/x-data-grid";
 
 function App() {
 
+    const [drawerOpen, setDrawerOpen] = useState(false);
   return (
+
+
     <div className="App">
         <AppBar>
-        <Button>hi</Button>
+            <Toolbar variant="dense">
+            <IconButton onClick={()=>{setDrawerOpen(!drawerOpen)}} >
+                <GridMenuIcon style={{color:'white'}} />
+            </IconButton>
+        </Toolbar>
 
         </AppBar>
       </div>
