@@ -1,69 +1,47 @@
-import React, {useState} from 'react';
 import './App.css';
-import {AppBar, Box, Button, Drawer, IconButton, List, ListItemButton, ListItemIcon, Toolbar} from "@mui/material";
-import {GridMenuIcon} from "@mui/x-data-grid";
-import {DataUsageTwoTone, RssFeed, Sync} from "@mui/icons-material";
+import {AppBar, Button, Container, Grid, IconButton, Toolbar, Typography} from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
+import {useState} from "react";
 
 function App() {
 
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [content, setContent] = useState(<h1>hi</h1>);
+
+
     return (
 
-
         <div className="App">
+            <Grid width={'auto'} border={2} borderColor={'black'}>
+                <AppBar position="static">
+                    <Toolbar>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            sx={{mr: 2}}
+                        >
+                            <MenuIcon />
+                        </IconButton>
 
 
-            <div>
+                        <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                            Crypup
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
 
-                <Drawer onClick={() => {
-                    setDrawerOpen(!drawerOpen)
-                }} open={drawerOpen} id="Drawer" anchor="left">
-                    <Box sx={{width: 200}}>
-                        <List>
-                            <ListItemButton sx={{width: '100%', height: 40}}>
-                                <ListItemIcon>
-                                    <RssFeed/>
-                                </ListItemIcon>
-                                <span> Feeder </span>
-                            </ListItemButton>
-
-                            <ListItemButton sx={{width: '100%', height: 40}}>
-                                <ListItemIcon>
-                                    <Sync/>
-                                </ListItemIcon>
-                                <span> Syncer </span>
-                            </ListItemButton>
-
-                            <ListItemButton sx={{width: '100%', height: 40}}>
-                                <ListItemIcon>
-                                    <DataUsageTwoTone/>
-                                </ListItemIcon>
-                                <span> Data </span>
-                            </ListItemButton>
+            </Grid>
 
 
-                        </List>
-                        <Button sx={{width: 'unset'}}>
+            <Container style={{width: 'auto', height: 'auto', background: 'khaki'}}>
 
-                        </Button>
+                <Grid width={'auto'} border={2} borderColor={'black'} height={'auto'}>
+                    {content}
+                </Grid>
 
-                    </Box>
+            </Container>
 
-                </Drawer>
-
-            </div>
-
-
-            <AppBar>
-                <Toolbar variant="dense">
-                    <IconButton onClick={() => {
-                        setDrawerOpen(!drawerOpen)
-                    }}>
-                        <GridMenuIcon style={{color: 'white'}}/>
-                    </IconButton>
-                </Toolbar>
-
-            </AppBar>
         </div>
 
     );
