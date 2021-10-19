@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import './App.css';
-import {AppBar, Button, IconButton, Toolbar} from "@mui/material";
+import {AppBar, Box, Button, Drawer, IconButton, List, ListItemButton, ListItemIcon, Toolbar} from "@mui/material";
 import {GridMenuIcon} from "@mui/x-data-grid";
+import {DataUsageTwoTone, RssFeed, Sync} from "@mui/icons-material";
 
 function App() {
 
@@ -10,6 +11,44 @@ function App() {
 
 
     <div className="App">
+
+        <Drawer onClick={()=>{setDrawerOpen(!drawerOpen)}} open={drawerOpen} id="Drawer" anchor="left">
+            <Box sx={{width: 200}}>
+                <List>
+                    <ListItemButton sx={{width: '100%', height: 40}}>
+                        <ListItemIcon>
+                            <RssFeed/>
+                        </ListItemIcon>
+                        <span> Feeder </span>
+                    </ListItemButton>
+
+                    <ListItemButton sx={{width: '100%', height: 40}}>
+                        <ListItemIcon>
+                            <Sync/>
+                        </ListItemIcon>
+                        <span> Syncer </span>
+                    </ListItemButton>
+
+                    <ListItemButton sx={{width: '100%', height: 40}}>
+                        <ListItemIcon>
+                            <DataUsageTwoTone/>
+                        </ListItemIcon>
+                        <span> Data </span>
+                    </ListItemButton>
+
+
+                </List>
+                <Button sx={{width: 'unset'}}>
+
+                </Button>
+
+            </Box>
+
+        </Drawer>
+
+
+
+
         <AppBar>
             <Toolbar variant="dense">
             <IconButton onClick={()=>{setDrawerOpen(!drawerOpen)}} >
