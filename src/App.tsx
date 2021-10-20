@@ -30,15 +30,16 @@ function App() {
                 <AppBar position="static">
                     <Toolbar>
                         <IconButton
+                            onClick={() => {
+                                setShowDrawer(!showDrawer)
+                            }}
                             size="large"
                             edge="start"
                             color="inherit"
                             aria-label="menu"
                             sx={{mr: 2}}
                         >
-                            <MenuIcon onClick={() => {
-                                setShowDrawer(!showDrawer)
-                            }}/>
+                            <MenuIcon/>
                         </IconButton>
 
 
@@ -51,14 +52,20 @@ function App() {
             </Grid>
 
             <div>
-                <Drawer anchor={'left'} onClick={()=>{setShowDrawer(!showDrawer)}} open={showDrawer}>
-                    <Box  minWidth={200}>
+                <Drawer anchor={'left'} onClick={() => {
+                    setShowDrawer(!showDrawer)
+                }} open={showDrawer}>
+                    <Box minWidth={200}>
                         <List>
-                            <ListItemButton onClick={()=>{setContent(<h1>rss</h1>)}} >
+                            <ListItemButton onClick={() => {
+                                setContent(<h1>rss</h1>)
+                            }}>
                                 <RssFeed/>
                                 <span>RSS</span>
                             </ListItemButton>
-                            <ListItemButton onClick={()=>{setContent(<Pdata/>)}}>
+                            <ListItemButton onClick={() => {
+                                setContent(<Pdata/>)
+                            }}>
                                 <Storage/>
                                 <span>Data</span>
                             </ListItemButton>
@@ -71,7 +78,7 @@ function App() {
             </div>
 
 
-            <Container style={{width: 'auto', padding:20, height: 'auto', background:'lightgray'}}>
+            <Container style={{width: 'auto', padding: 20, height: 'auto', background: 'lightgray'}}>
 
                 <Grid width={'auto'} border={2} borderColor={'black'} height={'auto'}>
                     {content}
