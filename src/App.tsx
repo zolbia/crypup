@@ -6,7 +6,7 @@ import {
     Drawer,
     Grid,
     IconButton,
-    List, ListItemButton,
+    List, ListItemButton, Modal,
     Toolbar,
     Typography
 } from "@mui/material";
@@ -14,6 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import {useState} from "react";
 import {RssFeed, Storage} from "@mui/icons-material";
 import {Pdata} from "./componnents/data/data";
+import {PRss} from "./componnents/rss/rss";
 
 
 function App() {
@@ -55,15 +56,15 @@ function App() {
                 <Drawer anchor={'left'} onClick={() => {
                     setShowDrawer(!showDrawer)
                 }} open={showDrawer}>
-                    <Box minWidth={200}>
-                        <List>
-                            <ListItemButton onClick={() => {
-                                setContent(<h1>rss</h1>)
+                    <Box style={{width:200}}>
+                        <List >
+                            <ListItemButton style={{width:200 ,height:50}} onClick={() => {
+                                setContent(<PRss/>)
                             }}>
                                 <RssFeed/>
                                 <span>RSS</span>
                             </ListItemButton>
-                            <ListItemButton onClick={() => {
+                            <ListItemButton style={{width:200 ,height:50}} onClick={() => {
                                 setContent(<Pdata/>)
                             }}>
                                 <Storage/>

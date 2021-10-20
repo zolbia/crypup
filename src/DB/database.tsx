@@ -3,7 +3,7 @@ import axios from "axios";
 
 let baseURL = 'https://xprojxb.herokuapp.com';
 let pathURL = {
-    URReceiveFeeds: '/feeds',
+    URReceiveData: '/feed',
     URLReceiveRSS: '/rss',
     URLUpdateRSS: '/rss/updaterss',
     URLAddFeed: '/feeds/addfeed'
@@ -67,7 +67,21 @@ async function updateRSS(RSS: string) {
 
 }
 
+async function receiveData() {
+
+    const result = (await axios.get((baseURL + pathURL.URReceiveData))).data
+
+
+    console.log(result);
+
+
+    return result;
+
+}
+
+
 export {
     receiveRss,
-    updateRSS
+    updateRSS,
+    receiveData
 }

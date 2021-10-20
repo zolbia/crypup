@@ -1,52 +1,68 @@
-import {Button, Stack, Tooltip} from "@mui/material";
+import {Button,  Stack, Tooltip} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 import {useEffect, useState} from "react";
-import {receiveRss, updateRSS} from "../../DB/database";
-import {FindReplace, Sync, UpdateRounded} from "@mui/icons-material";
+import { receiveData} from "../../DB/database";
+import {Add} from "@mui/icons-material";
 
 
 interface rowmodel {
     URL: string,
     RSS: string,
-    id: number
+    id: number,
+    Name: string,
+    Active: boolean,
+    Tags: [],
+
 }
 
 
-export function Pdata() {
+export function PRss() {
 
 
     const columns = [
         {
             field: 'id'
             , headerName: 'id',
-            width: 90
+            width: 100
         },
         {
-            field: 'URL',
-            headerName: 'URL',
-            description: 'Base URL',
-            width: 260,
+            field: 'Name',
+            headerName: 'Name',
+            description: 'Name Feeds',
+            width: 160,
             editable: false,
             type: 'string'
+        },
+        {
+            field: 'IsActive',
+            headerName: 'Active',
+            description: 'Active?',
+            sortable: true,
+            width: 160,
+            editable: false,
+            type: 'boolean'
         },
         {
             field: 'RSS',
             headerName: 'RSS',
             description: 'RSS',
-            width: 260,
+            width: 160,
             editable: false,
-            type: 'string',
+            type: 'array'
         },
-
         {
-            field: 'Path',
-            headerName: 'Path',
-            description: 'Path',
-            width: 350,
+            field: 'Tags',
+            headerName: 'Tags',
+            description: 'Tags',
+            width: 160,
             editable: false,
-            type: 'string',
-            valueGetter: (params: any) =>
-                `${params.getValue(params.id, 'URL') || ''}/${params.getValue(params.id, 'RSS') || ''}`,
+            type: 'Array'
+        },
+        {
+            field: 'URL',
+            width: 160,
+            editable: false,
+            type: 'string'
         },
     ]
 
@@ -58,8 +74,7 @@ export function Pdata() {
 
     useEffect(() => {
 
-        receiveRss().then(result => {
-            console.log(result)
+        receiveData().then(result => {
             const list: Array<rowmodel> = Array.from(result);
 
             for (let listKey in list) {
@@ -70,27 +85,15 @@ export function Pdata() {
 
     }, [])
 
-
     return (
         <div>
+
             <Stack style={{borderRadius: '11px 11px 0px 0px', background: 'white', margin: '0px 0px 11px 0px'}}
                    spacing={3} direction={'row'}>
-                <Tooltip arrow title={'Update selection RSS'}>
+
+                <Tooltip title={'Add new RSS'} arrow>
+
                     <Button
-                        onClick={() => {
-
-                            if (rowSelection.length > 0) {
-
-                                for (let rownumber of rowSelection) {
-                                    updateRSS(rows[parseInt(rownumber)].URL + '/' + rows[parseInt(rownumber)].RSS).then(result => {
-                                        console.log(result)
-                                    });
-                                }
-
-                            } else {
-                                console.log("UpdateAll");
-                            }
-                        }}
                         style={{
                             color: 'white',
                             borderRadius: '5px',
@@ -100,8 +103,7 @@ export function Pdata() {
                             padding: 10
                         }}>
 
-
-                        <FindReplace/>
+                        <Add/>
                     </Button>
                 </Tooltip>
             </Stack>
@@ -118,8 +120,8 @@ export function Pdata() {
                 disableSelectionOnClick
                 checkboxSelection
             />
-        </div>
 
+        </div>
     );
 }
 
