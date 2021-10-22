@@ -15,14 +15,14 @@ import {useState} from "react";
 import {RssFeed, Storage} from "@mui/icons-material";
 import {Pdata} from "./componnents/data/data";
 import {PRss} from "./componnents/rss/rss";
-
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 function App() {
 
     const [content, setContent] = useState(<h1>dashboard</h1>);
 
     const [showDrawer, setShowDrawer] = useState(false);
-
+    const [headerName, setHeaderName] = useState<string>('Crypup')
 
     return (
 
@@ -45,7 +45,7 @@ function App() {
 
 
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                            Crypup
+                            {headerName}
                         </Typography>
                     </Toolbar>
                 </AppBar>
@@ -56,18 +56,27 @@ function App() {
                 <Drawer anchor={'left'} onClick={() => {
                     setShowDrawer(!showDrawer)
                 }} open={showDrawer}>
-                    <Box style={{width:200}}>
-                        <List >
-                            <ListItemButton style={{width:200 ,height:50}} onClick={() => {
+                    <Box style={{width: 200}}>
+                        <List>
+                            <ListItemButton style={{width: 200, height: 50}} onClick={() => {
                                 setContent(<PRss/>)
+                                setHeaderName('RSSs')
                             }}>
                                 <RssFeed/>
                                 <span>RSS</span>
                             </ListItemButton>
-                            <ListItemButton style={{width:200 ,height:50}} onClick={() => {
+                            <ListItemButton style={{width: 200, height: 50}} onClick={() => {
                                 setContent(<Pdata/>)
+                                setHeaderName('Datas')
                             }}>
                                 <Storage/>
+                                <span>Data</span>
+                            </ListItemButton>
+                            <ListItemButton style={{width: 200, height: 50}} onClick={() => {
+                                setContent(<h1>News</h1>);
+                                setHeaderName('News')
+                            }}>
+                                <MenuBookIcon/>
                                 <span>Data</span>
                             </ListItemButton>
                         </List>
