@@ -12,17 +12,18 @@ import {
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {useState} from "react";
-import {RssFeed, Storage} from "@mui/icons-material";
+import {Dashboard, RssFeed, Storage} from "@mui/icons-material";
 import {Pdata} from "./componnents/data/data";
 import {PRss} from "./componnents/rss/rss";
+import {PDashboard} from "./componnents/dashboard/dashboard";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 function App() {
 
-    const [content, setContent] = useState(<h1>dashboard</h1>);
+    const [content, setContent] = useState(<PDashboard/>);
 
     const [showDrawer, setShowDrawer] = useState(false);
-    const [headerName, setHeaderName] = useState<string>('Crypup')
+    const [headerName, setHeaderName] = useState<string>('Dashboards')
 
     return (
 
@@ -59,6 +60,14 @@ function App() {
                     <Box style={{width: 200}}>
                         <List>
                             <ListItemButton style={{width: 200, height: 50}} onClick={() => {
+                                setContent(<PDashboard/>)
+                                setHeaderName('Dashboard')
+                            }}>
+                                <Dashboard/>
+                                <span>Dashboard</span>
+                            </ListItemButton>
+
+                            <ListItemButton style={{width: 200, height: 50}} onClick={() => {
                                 setContent(<PRss/>)
                                 setHeaderName('RSSs')
                             }}>
@@ -77,7 +86,7 @@ function App() {
                                 setHeaderName('News')
                             }}>
                                 <MenuBookIcon/>
-                                <span>Data</span>
+                                <span>News</span>
                             </ListItemButton>
                         </List>
 
