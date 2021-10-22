@@ -7,7 +7,8 @@ let pathURL = {
     URReceiveData: '/feed',
     URLReceiveRSS: '/rss',
     URLUpdateRSS: '/rss/updaterss',
-    URLAddFeed: '/feed/addfeed'
+    URLAddFeed: '/feed/addfeed',
+    URLReceiveNews: '/news'
 }
 
 enum methodModel {
@@ -96,11 +97,20 @@ async function receiveDashboardData() {
 
 }
 
+async function receiveNews() {
+
+    const result = (await axios.get((baseURL + pathURL.URLReceiveNews))).data
+
+    return result;
+
+}
+
 
 export {
     receiveRss,
     updateRSS,
     receiveData,
     addFeed,
-    receiveDashboardData
+    receiveDashboardData,
+    receiveNews
 }

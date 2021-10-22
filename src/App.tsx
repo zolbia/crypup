@@ -17,6 +17,7 @@ import {Pdata} from "./componnents/data/data";
 import {PRss} from "./componnents/rss/rss";
 import {PDashboard} from "./componnents/dashboard/dashboard";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import {PNews} from "./componnents/news/news";
 
 function App() {
 
@@ -82,7 +83,7 @@ function App() {
                                 <span>Data</span>
                             </ListItemButton>
                             <ListItemButton style={{width: 200, height: 50}} onClick={() => {
-                                setContent(<h1>News</h1>);
+                                setContent(<PNews/>);
                                 setHeaderName('News')
                             }}>
                                 <MenuBookIcon/>
