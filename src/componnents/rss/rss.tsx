@@ -1,8 +1,9 @@
-import {Button,  Stack, Tooltip} from "@mui/material";
+import {Button, Stack, Tooltip} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 import {useEffect, useState} from "react";
-import { receiveData} from "../../DB/database";
+import {receiveData} from "../../DB/database";
 import {Add} from "@mui/icons-material";
+import AddFeedsModal from "../modals/adddata/addData";
 
 
 interface rowmodel {
@@ -69,7 +70,8 @@ export function PRss() {
 
     const [rows, setRows] = useState<Array<rowmodel>>([]);
 
-    let rowSelection: Array<any> = [];
+
+    const [showModal, setShowModal] = useState(false);
 
 
     useEffect(() => {
@@ -88,12 +90,20 @@ export function PRss() {
     return (
         <div>
 
+            <AddFeedsModal close={() => {
+                setShowModal(!showModal)
+            }} isOpen={showModal}/>
+
+
             <Stack style={{borderRadius: '11px 11px 0px 0px', background: 'white', margin: '0px 0px 11px 0px'}}
                    spacing={3} direction={'row'}>
 
                 <Tooltip title={'Add new RSS'} arrow>
 
                     <Button
+                        onClick={() => {
+                            setShowModal(!showModal)
+                        }}
                         style={{
                             color: 'white',
                             borderRadius: '5px',
@@ -109,16 +119,14 @@ export function PRss() {
             </Stack>
 
             <DataGrid
-                onSelectionModelChange={(selectionArray) => {
-                    rowSelection = selectionArray;
-                }}
+
                 style={{background: 'white', borderRadius: '0px 0px 20px 20px'}}
                 rows={rows}
                 columns={columns}
                 rowsPerPageOptions={[6]}
                 autoHeight
                 disableSelectionOnClick
-                checkboxSelection
+                checkboxSelection={false}
             />
 
         </div>

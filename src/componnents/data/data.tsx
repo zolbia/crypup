@@ -2,7 +2,7 @@ import {Button, Stack, Tooltip} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 import {useEffect, useState} from "react";
 import {receiveRss, updateRSS} from "../../DB/database";
-import {FindReplace, Sync, UpdateRounded} from "@mui/icons-material";
+import {FindReplace} from "@mui/icons-material";
 
 
 interface rowmodel {

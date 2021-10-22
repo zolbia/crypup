@@ -6,7 +6,7 @@ import {
     Drawer,
     Grid,
     IconButton,
-    List, ListItemButton, Modal,
+    List, ListItemButton,
     Toolbar,
     Typography
 } from "@mui/material";

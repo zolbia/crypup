@@ -6,32 +6,32 @@ let pathURL = {
     URReceiveData: '/feed',
     URLReceiveRSS: '/rss',
     URLUpdateRSS: '/rss/updaterss',
-    URLAddFeed: '/feeds/addfeed'
+    URLAddFeed: '/feed/addfeed'
 }
 
-enum methodmodel {
+enum methodModel {
     post,
     delete,
     update,
     get,
 }
 
-function dataToStringfy(data: string) {
+function dataToStringfy(data: string | object) {
     const result: string = JSON.stringify({"Data": data});
     return result;
 }
 
-function Configy(method: methodmodel, path: string, data: string) {
+function Configy(method: methodModel, path: string, data: string) {
 
     path = baseURL + path;
 
     let me = '';
 
     switch (method) {
-        case methodmodel.post:
+        case methodModel.post:
             me = 'post';
             break;
-        case methodmodel.get:
+        case methodModel.get:
             me = 'get';
             break;
     }
@@ -61,7 +61,7 @@ async function receiveRss() {
 async function updateRSS(RSS: string) {
 
 
-    const result = await axios(Configy(methodmodel.post, pathURL.URLUpdateRSS, dataToStringfy(RSS)));
+    const result = await axios(Configy(methodModel.post, pathURL.URLUpdateRSS, dataToStringfy(RSS)));
 
     return result.data;
 
@@ -79,9 +79,17 @@ async function receiveData() {
 
 }
 
+async function addFeed(Feed: object) {
+
+    const result = await axios(Configy(methodModel.post, pathURL.URLAddFeed, dataToStringfy(Feed)));
+
+    return result.data;
+
+}
 
 export {
     receiveRss,
     updateRSS,
-    receiveData
+    receiveData,
+    addFeed
 }
