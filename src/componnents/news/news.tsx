@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {receiveNews} from "../../DB/database";
 import {DeleteRounded, UpdateRounded} from "@mui/icons-material";
 import AddFeedsModal from "../modals/adddata/addData";
-
+import {DeleteNewsModal} from "../modals/deleteNews/deleteNews";
 
 interface rowModel {
     id: number,
@@ -144,6 +144,9 @@ export function PNews() {
 
     return (
         <div>
+
+            <DeleteNewsModal header={`You delete ${rowSelection.length} data! `}/>
+
 
             <AddFeedsModal close={() => {
                 setShowModal(!showModal)
