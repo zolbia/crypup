@@ -88,10 +88,12 @@ export function PDashboard() {
                     <h2>{newsCount}</h2>
                 </Card>
 
+
                 <Card style={{background: 'white', width: '33%', height: 200}}>
                     <h1>Tags:</h1>
                     <h2>{tagCount}</h2>
                 </Card>
+
 
                 <Card style={{background: 'white', width: '60%', height: 200}}>
                     <h1>Data:</h1>

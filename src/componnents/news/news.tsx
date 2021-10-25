@@ -89,14 +89,13 @@ export function PNews() {
 
     const [rows, setRows] = useState<Array<rowModel>>([]);
 
-
-    const [showModal, setShowModal] = useState(false);
-
     const [rowSelection, setRowSelection] = useState<Array<any>>([])
+
+    const [showModalDelete, setShowModalDelete] = useState(false)
+
 
     useEffect(() => {
 
-        console.log('hi')
         receiveNews().then(news => {
 
             const constructorNewsArray: Array<rowModel> = news;
@@ -145,12 +144,9 @@ export function PNews() {
     return (
         <div>
 
-            <DeleteNewsModal header={`You delete ${rowSelection.length} data! `}/>
-
-
-            <AddFeedsModal close={() => {
-                setShowModal(!showModal)
-            }} isOpen={showModal}/>
+            <DeleteNewsModal close={() => {
+                setShowModalDelete(!showModalDelete)
+            }} isOpen={showModalDelete} deleteCount={rowSelection.length}/>
 
 
             <Stack style={{borderRadius: '11px 11px 0px 0px', background: 'white', margin: '0px 0px 11px 0px'}}
@@ -178,6 +174,9 @@ export function PNews() {
 
 
                             <Button
+                                onClick={() => {
+                                    setShowModalDelete(!showModalDelete)
+                                }}
                                 variant={'outlined'}
                                 style={{
                                     color: 'white',
