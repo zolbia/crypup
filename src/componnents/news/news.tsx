@@ -1,4 +1,4 @@
-import {Button, Stack, Tooltip} from "@mui/material";
+import {Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, Tooltip} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 import {useEffect, useState} from "react";
 import {receiveNews} from "../../DB/database";
@@ -94,9 +94,14 @@ export function PNews() {
 
     const [showModalDelete, setShowModalDelete] = useState(false)
 
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [age, setAge] = useState('');
+
+
     const rowsForDelete = () => {
 
-        const rowD:Array<rowModel> = [];
+        const rowD: Array<rowModel> = [];
 
         for (let rowDElement of rows) {
             if (rowDElement.isSelect && rowDElement !== undefined) {
@@ -108,6 +113,15 @@ export function PNews() {
 
 
     useEffect(() => {
+        receiveNewsRow();
+
+    }, [])
+
+
+    const receiveNewsRow = () => {
+        console.log('d')
+        setIsLoading(true);
+        setRows([])
 
         receiveNews().then(news => {
 
@@ -149,25 +163,32 @@ export function PNews() {
                     constructorNewsArray[parseInt(listKey)].pubDate = constructorNewsArray[parseInt(listKey)].pubDate['_text'];
             }
 
+            setIsLoading(false);
             setRows(constructorNewsArray)
 
         })
-    }, [])
+    }
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setAge(event.target.value as string);
+        console.log(event.target.value)
+    };
+
 
     return (
         <div>
-
             <DeleteNewsModal ids={rowsForDelete()} close={() => {
                 setShowModalDelete(!showModalDelete)
             }} isOpen={showModalDelete} deleteCount={rowSelection.length}/>
-
 
             <Stack style={{borderRadius: '11px 11px 0px 0px', background: 'white', margin: '0px 0px 11px 0px'}}
                    spacing={3} direction={'row'}>
 
                 <Tooltip title={'Update'} arrow>
 
+
                     <Button
+                        onClick={receiveNewsRow}
                         style={{
                             color: 'white',
                             borderRadius: '5px',
@@ -216,6 +237,37 @@ export function PNews() {
 
             </Stack>
 
+
+            <Stack style={{borderRadius: '11px 11px 0px 0px', background: 'white', margin: '0px 0px 11px 0px'}}
+                   spacing={3} direction={'row'}>
+
+
+                <Box sx={{margin: 1, width: 120}}>
+                    <FormControl >
+                        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={age}
+                            label="Age"
+                            onChange={handleChange}
+                        >
+
+                            <MenuItem style={{width: 120}} value={30}>30</MenuItem>
+                            <MenuItem style={{width: 120}} value={50}>50</MenuItem>
+                            <MenuItem style={{width: 120}} value={100}>100</MenuItem>
+                            <MenuItem style={{width: 120}} value={250}>250</MenuItem>
+                            <MenuItem style={{width: 120}} value={500}>500</MenuItem>
+
+
+                        </Select>
+                    </FormControl>
+                </Box>
+
+
+            </Stack>
+
+
             <DataGrid
                 onSelectionModelChange={(newRow) => {
 
@@ -228,12 +280,12 @@ export function PNews() {
                     })
 
 
-
                     setRowSelection(newRow)
                 }}
+                loading={isLoading}
                 rowHeight={20}
                 pageSize={10}
-                style={{background: 'white', borderRadius: '0px 0px 20px 20px'}}
+                style={{background: 'white', minHeight: 300, borderRadius: '0px 0px 20px 20px'}}
                 autoHeight
                 disableSelectionOnClick
                 checkboxSelection={true}
