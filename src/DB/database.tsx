@@ -1,4 +1,5 @@
 import axios from "axios";
+import {rowModel} from "../componnents/news/news";
 
 
 let baseURL = 'https://xprojxb.herokuapp.com';
@@ -8,7 +9,8 @@ let pathURL = {
     URLReceiveRSS: '/rss',
     URLUpdateRSS: '/rss/updaterss',
     URLAddFeed: '/feed/addfeed',
-    URLReceiveNews: '/news'
+    URLReceiveNews: '/news',
+    URLDeleteNews: '/news/delete'
 }
 
 enum methodModel {
@@ -36,6 +38,8 @@ function Configy(method: methodModel, path: string, data: string) {
         case methodModel.get:
             me = 'get';
             break;
+        case methodModel.delete:
+            me='delete'
     }
 
     let config: object = {
@@ -105,6 +109,15 @@ async function receiveNews() {
 
 }
 
+async function deleteNews(ids: Array<rowModel>) {
+
+    const deserialize = ids.map(s => s._id);
+
+    const result = await axios(Configy(methodModel.delete, pathURL.URLDeleteNews, dataToStringfy(deserialize)));
+
+    return result.data;
+
+}
 
 export {
     receiveRss,
@@ -112,5 +125,6 @@ export {
     receiveData,
     addFeed,
     receiveDashboardData,
-    receiveNews
+    receiveNews,
+    deleteNews
 }

@@ -5,13 +5,16 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import {deleteNews} from "../../../DB/database";
+import {rowModel} from "../../news/news";
 
 
 interface deleteModal {
 
     deleteCount: number,
     isOpen: boolean,
-    close?: any
+    close?: any,
+    ids: Array<rowModel>
 }
 
 export function DeleteNewsModal(props: deleteModal) {
@@ -45,6 +48,9 @@ export function DeleteNewsModal(props: deleteModal) {
                         width: 80
 
                     }} onClick={() => {
+
+                        deleteNews(props.ids);
+
                     }}>Delete</Button>
 
                 </DialogActions>

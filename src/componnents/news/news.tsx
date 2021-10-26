@@ -3,10 +3,9 @@ import {DataGrid} from "@mui/x-data-grid";
 import {useEffect, useState} from "react";
 import {receiveNews} from "../../DB/database";
 import {DeleteRounded, UpdateRounded} from "@mui/icons-material";
-import AddFeedsModal from "../modals/adddata/addData";
 import {DeleteNewsModal} from "../modals/deleteNews/deleteNews";
 
-interface rowModel {
+export interface rowModel {
     id: number,
     author?: string | any,
     category?: string | any,
@@ -16,7 +15,9 @@ interface rowModel {
     guid?: string | any,
     link?: string | any,
     pubDate?: string | any,
-    title?: string | any
+    title?: string | any,
+    _id: any,
+    isSelect?: boolean
 }
 
 
@@ -93,6 +94,18 @@ export function PNews() {
 
     const [showModalDelete, setShowModalDelete] = useState(false)
 
+    const rowsForDelete = () => {
+
+        const rowD:Array<rowModel> = [];
+
+        for (let rowDElement of rows) {
+            if (rowDElement.isSelect && rowDElement !== undefined) {
+                rowD.push(rowDElement)
+            }
+        }
+        return rowD;
+    }
+
 
     useEffect(() => {
 
@@ -144,7 +157,7 @@ export function PNews() {
     return (
         <div>
 
-            <DeleteNewsModal close={() => {
+            <DeleteNewsModal ids={rowsForDelete()} close={() => {
                 setShowModalDelete(!showModalDelete)
             }} isOpen={showModalDelete} deleteCount={rowSelection.length}/>
 
@@ -205,6 +218,17 @@ export function PNews() {
 
             <DataGrid
                 onSelectionModelChange={(newRow) => {
+
+                    rows.forEach(rw => {
+                        rw.isSelect = false;
+                    })
+
+                    newRow.forEach(rn => {
+                        rows[parseInt(rn.toString())].isSelect = true;
+                    })
+
+
+
                     setRowSelection(newRow)
                 }}
                 rowHeight={20}

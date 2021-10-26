@@ -59,7 +59,6 @@ export function Pdata() {
     useEffect(() => {
 
         receiveRss().then(result => {
-            console.log(result)
             const list: Array<rowmodel> = Array.from(result);
 
             for (let listKey in list) {
