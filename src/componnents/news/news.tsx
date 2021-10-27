@@ -1,8 +1,18 @@
-import {Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, Tooltip} from "@mui/material";
+import {
+    Box,
+    Button,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    Stack, TextField,
+    Tooltip
+} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
-import {useEffect, useState} from "react";
-import {receiveNews} from "../../DB/database";
-import {DeleteRounded, UpdateRounded} from "@mui/icons-material";
+import {ChangeEvent, MouseEventHandler, useEffect, useState} from "react";
+import {filterReceiveNews, receiveNews} from "../../DB/database";
+import {CleaningServicesRounded, DeleteRounded, UpdateRounded} from "@mui/icons-material";
 import {DeleteNewsModal} from "../modals/deleteNews/deleteNews";
 
 export interface rowModel {
@@ -96,8 +106,12 @@ export function PNews() {
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const [age, setAge] = useState('');
 
+    const [filterShow, setFilterShow] = useState('10');
+    const [filterData, setFilterData] = useState('100');
+    const [filterShowDelete, setFilterShowDelete] = useState('0');
+    const [filterDate, setFilterDate] = useState('');
+    const [filterSkip, setFilterSkip] = useState('0');
 
     const rowsForDelete = () => {
 
@@ -114,16 +128,29 @@ export function PNews() {
 
     useEffect(() => {
         receiveNewsRow();
-
     }, [])
 
 
     const receiveNewsRow = () => {
-        console.log('d')
         setIsLoading(true);
         setRows([])
 
-        receiveNews().then(news => {
+        const filter: filterReceiveNews = {
+            data: parseInt(filterData),
+            showDelete: false,
+            skip: parseInt(filterSkip)
+        }
+
+        switch (parseInt(filterShowDelete)) {
+            case 0:
+                filter.showDelete = false;
+                break;
+            case  1:
+                filter.showDelete = true;
+                break;
+        }
+
+        receiveNews(filter).then(news => {
 
             const constructorNewsArray: Array<rowModel> = news;
 
@@ -169,11 +196,34 @@ export function PNews() {
         })
     }
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value as string);
-        console.log(event.target.value)
+    const handleChangeShow = (event: SelectChangeEvent) => {
+        setFilterShow(event.target.value as string);
     };
 
+    const handleChangeData = (event: SelectChangeEvent) => {
+        setFilterData(event.target.value as string);
+    };
+
+    const handleChangeDelete = (event: SelectChangeEvent) => {
+        setFilterShowDelete(event.target.value as string);
+    };
+    const handleChangeDate = (event: any) => {
+
+        setFilterDate(event.target.value)
+    };
+
+    const handleChangeSkip = (event: any) => {
+
+        setFilterSkip(event.target.value)
+    };
+
+    const handleClearFilter = (event: any) => {
+        setFilterShow('10');
+        setFilterData('100');
+        setFilterShowDelete('0');
+        setFilterDate('');
+        setFilterSkip('0')
+    };
 
     return (
         <div>
@@ -238,32 +288,103 @@ export function PNews() {
             </Stack>
 
 
-            <Stack style={{borderRadius: '11px 11px 0px 0px', background: 'white', margin: '0px 0px 11px 0px'}}
-                   spacing={3} direction={'row'}>
+            <Stack style={{background: 'white', margin: '0px 0px 3px 0px'}}
+                   direction={'row'}>
 
 
                 <Box sx={{margin: 1, width: 120}}>
-                    <FormControl >
-                        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                    <FormControl>
+                        <InputLabel id="demo-simple-select-label">Show</InputLabel>
                         <Select
+                            size={'small'}
+                            style={{width: 120}}
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={age}
-                            label="Age"
-                            onChange={handleChange}
+                            value={filterShow}
+                            label="Show"
+                            MenuProps={{style: {width: 120}}}
+                            onChange={handleChangeShow}
                         >
-
-                            <MenuItem style={{width: 120}} value={30}>30</MenuItem>
-                            <MenuItem style={{width: 120}} value={50}>50</MenuItem>
-                            <MenuItem style={{width: 120}} value={100}>100</MenuItem>
-                            <MenuItem style={{width: 120}} value={250}>250</MenuItem>
-                            <MenuItem style={{width: 120}} value={500}>500</MenuItem>
-
-
+                            <MenuItem style={{width: 120}} value={10}> 10 </MenuItem>
+                            <MenuItem style={{width: 120}} value={30}> 30 </MenuItem>
+                            <MenuItem style={{width: 120}} value={50}> 50 </MenuItem>
+                            <MenuItem style={{width: 120}} value={100}> 100 </MenuItem>
+                            <MenuItem style={{width: 120}} value={500}> 500 </MenuItem>
                         </Select>
+
+
                     </FormControl>
                 </Box>
 
+                <Box sx={{margin: 1, width: 120}}>
+                    <FormControl>
+                        <InputLabel id="demo-simple-select-label">Data</InputLabel>
+                        <Select
+                            size={'small'}
+                            style={{width: 120}}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={filterData}
+                            label="Data"
+                            MenuProps={{style: {width: 120}}}
+                            onChange={handleChangeData}
+
+                        >
+                            <MenuItem style={{width: 120}} value={100}> 100 </MenuItem>
+                            <MenuItem style={{width: 120}} value={300}> 300 </MenuItem>
+                            <MenuItem style={{width: 120}} value={500}> 500 </MenuItem>
+                            <MenuItem style={{width: 120}} value={700}> 700 </MenuItem>
+                            <MenuItem style={{width: 120}} value={1000}> 1000 </MenuItem>
+                        </Select>
+
+
+                    </FormControl>
+                </Box>
+
+                <Box sx={{margin: 1, width: 130}}>
+                    <FormControl>
+                        <InputLabel id="demo-simple-select-label">Show Delete</InputLabel>
+                        <Select
+                            size={'small'}
+                            style={{width: 130}}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={filterShowDelete}
+                            label="Show Delete"
+                            MenuProps={{style: {width: 130}}}
+                            onChange={handleChangeDelete}
+
+                        >
+                            <MenuItem style={{width: 130}} value={1}> yes </MenuItem>
+                            <MenuItem style={{width: 130}} value={0}> No </MenuItem>
+                        </Select>
+
+
+                    </FormControl>
+                </Box>
+
+                <Box sx={{margin: 1, width: 130}}>
+                    <TextField value={filterDate} onChange={handleChangeDate} label={'Date'} size={'small'}/>
+                </Box>
+
+                <Box sx={{margin: 1, width: 130}}>
+                    <TextField value={filterSkip} onChange={handleChangeSkip} label={'Skip'} size={'small'}/>
+                </Box>
+
+                <Box sx={{margin: 1}}>
+                    <Tooltip title={'Clear Filter'} arrow>
+                        <Button
+                            onClick={handleClearFilter}
+                            style={{
+                                color: 'gray',
+                                borderRadius: '5px',
+                                padding: 10
+                            }}>
+
+                            <CleaningServicesRounded/>
+                        </Button>
+                    </Tooltip>
+                </Box>
 
             </Stack>
 
@@ -282,9 +403,10 @@ export function PNews() {
 
                     setRowSelection(newRow)
                 }}
+                pagination
                 loading={isLoading}
                 rowHeight={20}
-                pageSize={10}
+                pageSize={parseInt(filterShow)}
                 style={{background: 'white', minHeight: 300, borderRadius: '0px 0px 20px 20px'}}
                 autoHeight
                 disableSelectionOnClick

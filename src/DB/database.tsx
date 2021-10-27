@@ -25,7 +25,7 @@ function dataToStringfy(data: string | object) {
     return result;
 }
 
-function Configy(method: methodModel, path: string, data: string) {
+function Configy(method: methodModel, path: string, data: string | object) {
 
     path = baseURL + path;
 
@@ -39,7 +39,7 @@ function Configy(method: methodModel, path: string, data: string) {
             me = 'get';
             break;
         case methodModel.delete:
-            me='delete'
+            me = 'delete'
     }
 
     let config: object = {
@@ -101,11 +101,18 @@ async function receiveDashboardData() {
 
 }
 
-async function receiveNews() {
+export type filterReceiveNews = {
+    showDelete: boolean, //show delete 0|1
+    data: number, //Data
+    skip: number
+}
 
-    const result = (await axios.get((baseURL + pathURL.URLReceiveNews))).data
+async function receiveNews(filter: filterReceiveNews) {
 
-    return result;
+
+    const result = await axios(Configy(methodModel.get, pathURL.URLReceiveNews, dataToStringfy(filter)))
+
+    return result.data;
 
 }
 
