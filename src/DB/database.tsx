@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosRequestConfig} from "axios";
 import {rowModel} from "../componnents/news/news";
 
 
@@ -109,10 +109,10 @@ export type filterReceiveNews = {
 
 async function receiveNews(filter: filterReceiveNews) {
 
-
-    const result = await axios(Configy(methodModel.get, pathURL.URLReceiveNews, dataToStringfy(filter)))
+    const result = await axios(Configy(methodModel.post, pathURL.URLReceiveNews, dataToStringfy(filter)));
 
     return result.data;
+
 
 }
 

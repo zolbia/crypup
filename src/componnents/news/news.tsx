@@ -10,7 +10,7 @@ import {
     Tooltip
 } from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
-import {ChangeEvent, MouseEventHandler, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {filterReceiveNews, receiveNews} from "../../DB/database";
 import {CleaningServicesRounded, DeleteRounded, UpdateRounded} from "@mui/icons-material";
 import {DeleteNewsModal} from "../modals/deleteNews/deleteNews";
@@ -152,6 +152,7 @@ export function PNews() {
 
         receiveNews(filter).then(news => {
 
+
             const constructorNewsArray: Array<rowModel> = news;
 
             for (let listKey in constructorNewsArray) {
@@ -198,23 +199,27 @@ export function PNews() {
 
     const handleChangeShow = (event: SelectChangeEvent) => {
         setFilterShow(event.target.value as string);
+        receiveNewsRow();
     };
 
     const handleChangeData = (event: SelectChangeEvent) => {
         setFilterData(event.target.value as string);
+        receiveNewsRow();
     };
 
     const handleChangeDelete = (event: SelectChangeEvent) => {
         setFilterShowDelete(event.target.value as string);
+        receiveNewsRow();
     };
     const handleChangeDate = (event: any) => {
-
-        setFilterDate(event.target.value)
+        setFilterDate(event.target.value as string)
+        receiveNewsRow();
     };
 
     const handleChangeSkip = (event: any) => {
 
         setFilterSkip(event.target.value)
+        receiveNewsRow();
     };
 
     const handleClearFilter = (event: any) => {
@@ -222,7 +227,8 @@ export function PNews() {
         setFilterData('100');
         setFilterShowDelete('0');
         setFilterDate('');
-        setFilterSkip('0')
+        setFilterSkip('0');
+        receiveNewsRow();
     };
 
     return (
@@ -309,7 +315,6 @@ export function PNews() {
                             <MenuItem style={{width: 120}} value={30}> 30 </MenuItem>
                             <MenuItem style={{width: 120}} value={50}> 50 </MenuItem>
                             <MenuItem style={{width: 120}} value={100}> 100 </MenuItem>
-                            <MenuItem style={{width: 120}} value={500}> 500 </MenuItem>
                         </Select>
 
 
