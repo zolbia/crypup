@@ -11,9 +11,15 @@ import {
 } from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 import {useEffect, useState} from "react";
-import {filterReceiveNews, receiveNews} from "../../DB/database";
-import {CleaningServicesRounded, DeleteRounded, UpdateRounded} from "@mui/icons-material";
+import {receiveNews} from "../../DB/database";
+import {
+    CheckRounded,
+    CleaningServicesRounded,
+    CloseRounded,
+    UpdateRounded
+} from "@mui/icons-material";
 import {DeleteNewsModal} from "../modals/deleteNews/deleteNews";
+import {ApproveNewsModal} from "../modals/approveNews/approveNews";
 
 export interface rowModel {
     id: number,
@@ -28,6 +34,21 @@ export interface rowModel {
     title?: string | any,
     _id: any,
     isSelect?: boolean
+}
+
+const gridFilter = {
+    data: 100,
+    showDelete: false,
+    date: '',
+    skip: 0,
+    showApprove: false,
+    clear: () => {
+        gridFilter.data = 100
+        gridFilter.showDelete = false
+        gridFilter.date = ''
+        gridFilter.skip = 0
+        gridFilter.showApprove = false
+    }
 }
 
 
@@ -93,7 +114,7 @@ export function PNews() {
             field: 'title',
             width: 500,
             editable: false,
-            type: '<link/>'
+            type: 'string'
         },
     ]
 
@@ -103,15 +124,18 @@ export function PNews() {
     const [rowSelection, setRowSelection] = useState<Array<any>>([])
 
     const [showModalDelete, setShowModalDelete] = useState(false)
+    const [showModalApprove, setShowModalApprove] = useState(false)
+
 
     const [isLoading, setIsLoading] = useState(true);
 
 
-    const [filterShow, setFilterShow] = useState('10');
-    const [filterData, setFilterData] = useState('100');
-    const [filterShowDelete, setFilterShowDelete] = useState('0');
+    const [filterShow, setFilterShow] = useState(10);
+    const [filterData, setFilterData] = useState(100);
+    const [filterShowDelete, setFilterShowDelete] = useState(0);
+    const [filterShowApprove, setFilterShowApprove] = useState(0);
     const [filterDate, setFilterDate] = useState('');
-    const [filterSkip, setFilterSkip] = useState('0');
+    const [filterSkip, setFilterSkip] = useState(0);
 
     const rowsForDelete = () => {
 
@@ -132,25 +156,12 @@ export function PNews() {
 
 
     const receiveNewsRow = () => {
+
         setIsLoading(true);
         setRows([])
 
-        const filter: filterReceiveNews = {
-            data: parseInt(filterData),
-            showDelete: false,
-            skip: parseInt(filterSkip)
-        }
-
-        switch (parseInt(filterShowDelete)) {
-            case 0:
-                filter.showDelete = false;
-                break;
-            case  1:
-                filter.showDelete = true;
-                break;
-        }
-
-        receiveNews(filter).then(news => {
+        console.log(gridFilter)
+        receiveNews(gridFilter).then(news => {
 
 
             const constructorNewsArray: Array<rowModel> = news;
@@ -198,41 +209,63 @@ export function PNews() {
     }
 
     const handleChangeShow = (event: SelectChangeEvent) => {
-        setFilterShow(event.target.value as string);
+        setFilterShow(parseInt(event.target.value));
         receiveNewsRow();
     };
 
     const handleChangeData = (event: SelectChangeEvent) => {
-        setFilterData(event.target.value as string);
+        setFilterData(parseInt(event.target.value));
+        gridFilter.data = parseInt(event.target.value);
         receiveNewsRow();
     };
 
     const handleChangeDelete = (event: SelectChangeEvent) => {
-        setFilterShowDelete(event.target.value as string);
+        setFilterShowDelete(parseInt(event.target.value));
+
+        gridFilter.showDelete = parseInt(event.target.value) === 1;
         receiveNewsRow();
     };
+
+
+    const handleChangeApprove = (event: SelectChangeEvent) => {
+        setFilterShowApprove(parseInt(event.target.value));
+        gridFilter.showApprove = parseInt(event.target.value) === 1;
+        receiveNewsRow();
+    };
+
+
     const handleChangeDate = (event: any) => {
         setFilterDate(event.target.value as string)
+        gridFilter.date = '2020/11/30';
+
         receiveNewsRow();
     };
 
     const handleChangeSkip = (event: any) => {
 
         setFilterSkip(event.target.value)
+        gridFilter.skip = parseInt(event.target.value);
         receiveNewsRow();
     };
 
-    const handleClearFilter = (event: any) => {
-        setFilterShow('10');
-        setFilterData('100');
-        setFilterShowDelete('0');
+    const handleClearFilter = () => {
+        setFilterShow(10);
+        setFilterData(100);
+        setFilterShowDelete(0);
         setFilterDate('');
-        setFilterSkip('0');
+        setFilterSkip(0);
+
+        gridFilter.clear();
         receiveNewsRow();
     };
 
     return (
         <div>
+            <ApproveNewsModal ids={rowsForDelete()} close={() => {
+                setShowModalApprove(!showModalApprove)
+            }} isOpen={showModalApprove} deleteCount={rowSelection.length}/>
+
+
             <DeleteNewsModal ids={rowsForDelete()} close={() => {
                 setShowModalDelete(!showModalDelete)
             }} isOpen={showModalDelete} deleteCount={rowSelection.length}/>
@@ -260,7 +293,7 @@ export function PNews() {
 
                 {
                     rowSelection.length > 0 ?
-                        <Tooltip title={`Delete [ ${rowSelection.length} ] item selection`} arrow>
+                        [<Tooltip title={`Reject [ ${rowSelection.length} ] item selection`} arrow>
 
 
                             <Button
@@ -283,10 +316,36 @@ export function PNews() {
                                 <Stack spacing={1} direction={'row'}>
 
                                     <span>{`Count: ${rowSelection.length}`}</span>
-                                    <DeleteRounded/>
+                                    <CloseRounded/>
                                 </Stack>
                             </Button>
-                        </Tooltip> :
+                        </Tooltip>, <Tooltip title={`Approve [ ${rowSelection.length} ] item selection`} arrow>
+
+
+                            <Button
+                                onClick={() => {
+                                    setShowModalApprove(!showModalApprove);
+                                }}
+                                variant={'outlined'}
+                                style={{
+                                    color: 'white',
+                                    borderRadius: '5px',
+                                    borderColor: 'black',
+                                    background: 'lightgreen',
+                                    border: 20,
+                                    height: "auto",
+                                    margin: 10,
+                                    padding: 10
+                                }}>
+
+
+                                <Stack spacing={1} direction={'row'}>
+
+                                    <span>{`Count: ${rowSelection.length}`}</span>
+                                    <CheckRounded/>
+                                </Stack>
+                            </Button>
+                        </Tooltip>] :
                         undefined
                 }
 
@@ -306,7 +365,7 @@ export function PNews() {
                             style={{width: 120}}
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={filterShow}
+                            value={filterShow.toString()}
                             label="Show"
                             MenuProps={{style: {width: 120}}}
                             onChange={handleChangeShow}
@@ -329,7 +388,7 @@ export function PNews() {
                             style={{width: 120}}
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={filterData}
+                            value={filterData.toString()}
                             label="Data"
                             MenuProps={{style: {width: 120}}}
                             onChange={handleChangeData}
@@ -354,11 +413,31 @@ export function PNews() {
                             style={{width: 130}}
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={filterShowDelete}
+                            value={filterShowDelete.toString()}
                             label="Show Delete"
                             MenuProps={{style: {width: 130}}}
                             onChange={handleChangeDelete}
+                        >
+                            <MenuItem style={{width: 130}} value={1}> yes </MenuItem>
+                            <MenuItem style={{width: 130}} value={0}> No </MenuItem>
+                        </Select>
 
+
+                    </FormControl>
+                </Box>
+
+                <Box sx={{margin: 1, width: 130}}>
+                    <FormControl>
+                        <InputLabel id="demo-simple-select-label">Show Approve</InputLabel>
+                        <Select
+                            size={'small'}
+                            style={{width: 130}}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={filterShowApprove.toString()}
+                            label="Show Approve"
+                            MenuProps={{style: {width: 130}}}
+                            onChange={handleChangeApprove}
                         >
                             <MenuItem style={{width: 130}} value={1}> yes </MenuItem>
                             <MenuItem style={{width: 130}} value={0}> No </MenuItem>
@@ -411,7 +490,7 @@ export function PNews() {
                 pagination
                 loading={isLoading}
                 rowHeight={20}
-                pageSize={parseInt(filterShow)}
+                pageSize={filterShow}
                 style={{background: 'white', minHeight: 300, borderRadius: '0px 0px 20px 20px'}}
                 autoHeight
                 disableSelectionOnClick

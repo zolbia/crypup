@@ -1,4 +1,4 @@
-import axios, {AxiosRequestConfig} from "axios";
+import axios from "axios";
 import {rowModel} from "../componnents/news/news";
 
 
@@ -10,7 +10,8 @@ let pathURL = {
     URLUpdateRSS: '/rss/updaterss',
     URLAddFeed: '/feed/addfeed',
     URLReceiveNews: '/news',
-    URLDeleteNews: '/news/delete'
+    URLDeleteNews: '/news/delete',
+    URLApproveNews: '/news/approve'
 }
 
 enum methodModel {
@@ -20,12 +21,12 @@ enum methodModel {
     get,
 }
 
-function dataToStringfy(data: string | object) {
+function dataToStringify(data: string | object) {
     const result: string = JSON.stringify({"Data": data});
     return result;
 }
 
-function Configy(method: methodModel, path: string, data: string | object) {
+function configure(method: methodModel, path: string, data: string | object) {
 
     path = baseURL + path;
 
@@ -58,16 +59,13 @@ function Configy(method: methodModel, path: string, data: string | object) {
 
 async function receiveRss() {
 
-    const result = (await axios.get((baseURL + pathURL.URLReceiveRSS))).data
-
-    return result;
-
+    return (await axios.get((baseURL + pathURL.URLReceiveRSS))).data;
 }
 
 async function updateRSS(RSS: string) {
 
 
-    const result = await axios(Configy(methodModel.post, pathURL.URLUpdateRSS, dataToStringfy(RSS)));
+    const result = await axios(configure(methodModel.post, pathURL.URLUpdateRSS, dataToStringify(RSS)));
 
     return result.data;
 
@@ -75,19 +73,13 @@ async function updateRSS(RSS: string) {
 
 async function receiveData() {
 
-    const result = (await axios.get((baseURL + pathURL.URReceiveData))).data
-
-
-    console.log(result);
-
-
-    return result;
+    return (await axios.get((baseURL + pathURL.URReceiveData))).data;
 
 }
 
 async function addFeed(Feed: object) {
 
-    const result = await axios(Configy(methodModel.post, pathURL.URLAddFeed, dataToStringfy(Feed)));
+    const result = await axios(configure(methodModel.post, pathURL.URLAddFeed, dataToStringify(Feed)));
 
     return result.data;
 
@@ -95,9 +87,7 @@ async function addFeed(Feed: object) {
 
 async function receiveDashboardData() {
 
-    const result = (await axios.get((baseURL + pathURL.URLReceiveDashboardData))).data
-
-    return result;
+    return (await axios.get((baseURL + pathURL.URLReceiveDashboardData))).data;
 
 }
 
@@ -109,18 +99,26 @@ export type filterReceiveNews = {
 
 async function receiveNews(filter: filterReceiveNews) {
 
-    const result = await axios(Configy(methodModel.post, pathURL.URLReceiveNews, dataToStringfy(filter)));
+    const result = await axios(configure(methodModel.post, pathURL.URLReceiveNews, dataToStringify(filter)));
 
     return result.data;
-
-
 }
 
 async function deleteNews(ids: Array<rowModel>) {
 
     const deserialize = ids.map(s => s._id);
 
-    const result = await axios(Configy(methodModel.delete, pathURL.URLDeleteNews, dataToStringfy(deserialize)));
+    const result = await axios(configure(methodModel.delete, pathURL.URLDeleteNews, dataToStringify(deserialize)));
+
+    return result.data;
+
+}
+
+async function approveNews(ids: Array<rowModel>) {
+
+    const deserialize = ids.map(s => s._id);
+
+    const result = await axios(configure(methodModel.post, pathURL.URLApproveNews, dataToStringify(deserialize)));
 
     return result.data;
 
@@ -133,5 +131,6 @@ export {
     addFeed,
     receiveDashboardData,
     receiveNews,
-    deleteNews
+    deleteNews,
+    approveNews
 }
