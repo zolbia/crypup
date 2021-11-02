@@ -21,6 +21,7 @@ import {
 import {DeleteNewsModal} from "../modals/deleteNews/deleteNews";
 import {ApproveNewsModal} from "../modals/approveNews/approveNews";
 
+
 export interface rowModel {
     id: number,
     author?: string | any,
@@ -160,7 +161,6 @@ export function PNews() {
         setIsLoading(true);
         setRows([])
 
-        console.log(gridFilter)
         receiveNews(gridFilter).then(news => {
 
 
@@ -237,7 +237,6 @@ export function PNews() {
     const handleChangeDate = (event: any) => {
         setFilterDate(event.target.value as string)
         gridFilter.date = '2020/11/30';
-
         receiveNewsRow();
     };
 
@@ -254,6 +253,7 @@ export function PNews() {
         setFilterShowDelete(0);
         setFilterDate('');
         setFilterSkip(0);
+        setFilterShowApprove(0);
 
         gridFilter.clear();
         receiveNewsRow();
@@ -483,8 +483,6 @@ export function PNews() {
                     newRow.forEach(rn => {
                         rows[parseInt(rn.toString())].isSelect = true;
                     })
-
-
                     setRowSelection(newRow)
                 }}
                 pagination
